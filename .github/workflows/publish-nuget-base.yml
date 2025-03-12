@@ -1,12 +1,9 @@
 name: Generate cleaned vocabulary and packages
 on: 
   workflow_dispatch:
-  push: # push must be changed to trigger after md's have been generated (workflow trigger?)
-    paths:
-      - 'docs/vocabulary_development/definitions/**.md' 
 
 jobs:
-  generate_vocabulary:
+  pack-and-push:
     runs-on: ubuntu-latest
     env:
       PACKAGE_OUTPUT_FOLDER: "${{ github.workspace }}/src/reference-implementation-packages"
