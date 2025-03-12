@@ -1,4 +1,4 @@
-name: Generate cleaned vocabulary and packages
+name: Generate nuget packages for blackboard.base
 on: 
   workflow_dispatch:
 
