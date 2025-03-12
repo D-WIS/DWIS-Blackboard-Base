@@ -3,3 +3,4 @@ dotnet pack ./DWIS.OPCUA.Schemas/DWIS.OPCUA.Schemas.csproj --output reference-im
 dotnet pack ./DWIS.OPCUA.Vocabulary/DWIS.OPCUA.Vocabulary.csproj --output reference-implementation-packages -p:PackageVersion=2.1.21  --version-suffix "dev"
 dotnet pack ./DWIS.Vocabulary.ResourceIntegration/DWIS.Vocabulary.ResourceIntegration.csproj --output reference-implementation-packages -p:PackageVersion=2.1.21  --version-suffix "dev"
 dotnet pack ./DWIS.SPARQL.Utils/DWIS.SPARQL.Utils.csproj --output reference-implementation-packages -p:PackageVersion=2.1.21  --version-suffix "dev"
+dotnet pack ./DWIS.OPCUA.Configuration/DWIS.OPCUA.Configuration.csproj --output reference-implementation-packages -p:PackageVersion=2.1.21  --version-suffix "dev"

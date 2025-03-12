@@ -15,6 +15,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DWIS.SPARQL.Utils", "DWIS.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DWIS.Vocabulary.ResourceIntegration", "DWIS.Vocabulary.ResourceIntegration\DWIS.Vocabulary.ResourceIntegration.csproj", "{32FE3FF3-DADA-4BEE-8F8F-579B711FEA7E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{92CBAA06-7F78-415A-9021-E3F520E96C9F}"
+	ProjectSection(SolutionItems) = preProject
+		pack-reference-implementation.bat = pack-reference-implementation.bat
+		push-packages.bat = push-packages.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
