@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DWIS.Vocabulary.Development" Version="1.0.151" />
+    <PackageReference Include="DWIS.Vocabulary.Development" Version="1.0.152" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
