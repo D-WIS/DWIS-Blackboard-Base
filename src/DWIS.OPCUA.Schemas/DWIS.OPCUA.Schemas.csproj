@@ -6,12 +6,6 @@
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\..\..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="DWIS.Vocabulary.Development" Version="1.0.151" />
     <PackageReference Include="DWIS.Vocabulary.Schemas" Version="1.0.151" />
     <PackageReference Include="Newtonsoft.Json.Schema" Version="4.0.1" />
@@ -20,6 +14,13 @@
     <ProjectReference Include="..\DWIS.API.DTO\DWIS.API.DTO.csproj" />
     <ProjectReference Include="..\DWIS.OPCUA.Vocabulary\DWIS.OPCUA.Vocabulary.csproj" />
     <ProjectReference Include="..\DWIS.Vocabulary.ResourceIntegration\DWIS.Vocabulary.ResourceIntegration.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
