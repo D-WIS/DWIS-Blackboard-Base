@@ -8,7 +8,12 @@
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\..\..\LICENSE">
+    <PackageReference Include="DWIS.Vocabulary.Schemas" Version="1.0.152" />
+    <PackageReference Include="RDFSharp" Version="3.4.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

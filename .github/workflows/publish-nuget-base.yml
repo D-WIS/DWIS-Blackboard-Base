@@ -1,0 +1,24 @@
+name: Generate nuget packages for blackboard.base
+on: 
+  workflow_dispatch:
+
+jobs:
+  pack-and-push:
+    runs-on: ubuntu-latest
+    env:
+      PACKAGE_OUTPUT_FOLDER: "${{ github.workspace }}/src/reference-implementation-packages"
+      NUGET_SECRET_API: ${{ secrets.NUGET_SECRET_API }}
+
+    
+    steps:
+      - uses: actions/checkout@v2   
+
+      - name: Build and pack
+        run: |
+          cd "${{ github.workspace }}/src"
+          dotnet pack DWIS.Blackboard.Base.sln --output $Env:PACKAGE_OUTPUT_FOLDER -p:PackageVersion=1.1."${{ github.run_number }}"
+
+      - name: 'Push to NuGet.org'
+        run: |
+          cd $Env:PACKAGE_OUTPUT_FOLDER
+          dotnet nuget push "*.nupkg" -k "$env:NUGET_SECRET_API" -s https://api.nuget.org/v3/index.json --skip-duplicate
