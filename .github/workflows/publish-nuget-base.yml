@@ -21,4 +21,4 @@ jobs:
       - name: 'Push to NuGet.org'
         run: |
           cd "${{ github.workspace }}/src/reference-implementation-packages"
-          dotnet nuget push "*.nupkg" -k "$env:NUGET_SECRET_API" -s https://api.nuget.org/v3/index.json --skip-duplicate
+          dotnet nuget push "*.nupkg" -k ${NUGET_SECRET_API} -s https://api.nuget.org/v3/index.json --skip-duplicate
