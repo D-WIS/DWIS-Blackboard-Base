@@ -16,7 +16,7 @@ jobs:
       - name: Build and pack
         run: |
           cd "${{ github.workspace }}/src"
-          dotnet pack DWIS.Blackboard.Base.sln --output "${{ github.workspace }}/src/reference-implementation-packages" -p:PackageVersion=1.1."${{ github.run_number }}"
+          dotnet pack DWIS.Blackboard.Base.sln --output "${{ github.workspace }}/src/reference-implementation-packages" -p:PackageVersion=2.2."${{ github.run_number }}"
 
       - name: 'Push to NuGet.org'
         run: |
