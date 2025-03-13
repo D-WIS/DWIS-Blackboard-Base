@@ -6,6 +6,9 @@
     <Nullable>enable</Nullable>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/D-WIS/DWIS-Blackboard-Base</RepositoryUrl>
+    <PackageProjectUrl>https://d-wis.org/</PackageProjectUrl>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DWIS.Vocabulary.Schemas" Version="1.0.152" />
@@ -14,6 +17,10 @@
 
   <ItemGroup>
     <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\readme.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
