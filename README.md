@@ -182,22 +182,42 @@ Here is an overview of what a manifest file can/should contain:
 | **NameSpaceIndex** | `ushort` | *N/A* | The index of the item's namespace in the **blackboard** address space. Corresponds to the `ns = xx` part of a OPC-UA node-id. |
 | **ID** | `string` | *N/A* | The item's id in the **blackboard** address space. Corresponds to the `s = xx` part of a OPC-UA node-id. |
 
+### Query resolution
+
+The result of a call to the *ResolveQuery* method is a json version of a **QueryResult** object. 
+
+#### QueryResult
+
+| **Field name** | **Field type** | **Mandatory** | **Description** |
+| -------------- | -------------- | ------------- | --------------- |
+| **VariablesHeader** | `string[]` | *N/A* | The header necessary to interpret the rows of the **Results** field. There should be as many items as selected variables in the SPARQL query. |
+| **Results** | `QueryResultRow[]` | *N/A* | The table containing the results, organized by row.  |
+
+#### QueryResultRow
+
+| **Field name** | **Field type** | **Mandatory** | **Description** |
+| -------------- | -------------- | ------------- | --------------- |
+| **Items** | `NodeIdentifier[]` | *N/A* | The identifiers for the items forming the row of the table. |
+
+### Query registration
+
+One can register a query: in that case, one receives a notification when a change of the query result is detected on the server. The notification mechanism relies on OPC-UA event or value change subscription. 
+On a change event, a json version of a **QueryResultsDiff** object is distributed. The same type of object is also returned as a result of the registration. 
+
+#### QueryResultsDiff
+
+| **Field name** | **Field type** | **Mandatory** | **Description** |
+| -------------- | -------------- | ------------- | --------------- |
+| **QueryID** | `string` | *N/A* | The id assigned by the **blackboard** to the SPARQL query. An OPC-UA node with the same id is created: by subscribing to events on this node, change notifications will be received. |
+| **QueryResultID** | `string` | *N/A* | The id assigned by the **blackboard** to the results to the SPARQL query. An OPC-UA node with the same id is created, that contains the current results: by subscribing to value-change on this node, change notifications will be received. |
+| **Added** | `QueryResultRow[]` | *N/A* | The rows that have been added to the query's results since last notification. When the **QueryResultsDiff** is the result of a registration, the **Added** field contains *all* the results of the query. |
+| **Removed** | `QueryResultRow[]` | *N/A* | The rows that have been removed from the query's results since last notification. |
+
+
+<!--
 
 | **Field name** | **Field type** | **Mandatory** | **Description** |
 | -------------- | -------------- | ------------- | --------------- |
 | **** | `` | ** |  |
 
-
-| **Field name** | **Field type** | **Mandatory** | **Description** |
-| -------------- | -------------- | ------------- | --------------- |
-| **** | `` | ** |  |
-
-
-| **Field name** | **Field type** | **Mandatory** | **Description** |
-| -------------- | -------------- | ------------- | --------------- |
-| **** | `` | ** |  |
-
-
-| **Field name** | **Field type** | **Mandatory** | **Description** |
-| -------------- | -------------- | ------------- | --------------- |
-| **** | `` | ** |  |
+-->

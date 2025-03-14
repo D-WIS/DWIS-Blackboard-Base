@@ -244,8 +244,6 @@ namespace DWIS.API.DTO
         {
             return ((IEnumerable<QueryResultRow>)Results).GetEnumerator();
         }
-
-       
     }
 
 
