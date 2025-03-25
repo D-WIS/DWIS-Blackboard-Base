@@ -49,6 +49,8 @@ public static partial class TypesIds
 	public static string StratigraphyDescription = "StratigraphyDescriptionType";
 	public static string RigDescription = "RigDescriptionType";
 	public static string ContinuousDataType = "ContinuousDataTypeType";
+	public static string DateDataType = "DateDataTypeType";
+	public static string ElapsedTimeDataType = "ElapsedTimeDataTypeType";
 	public static string NormalizedDataType = "NormalizedDataTypeType";
 	public static string DiscreteDataType = "DiscreteDataTypeType";
 	public static string EnumerationDataType = "EnumerationDataTypeType";
@@ -583,7 +585,12 @@ public static partial class TypesIds
 	public static string GenericEquipmentGatevalve = "GenericEquipmentGatevalveType";
 	public static string ThreeWayManifold = "ThreeWayManifoldType";
 	public static string ThreeWayValve = "ThreeWayValveType";
+	public static string Feature = "FeatureType";
+	public static string DataTransmissionFeature = "DataTransmissionFeatureType";
+	public static string LookupTableFeature = "LookupTableFeatureType";
 	public static string DrillingManagementFeature = "DrillingManagementFeatureType";
+	public static string FillPipeFeature = "FillPipeFeatureType";
+	public static string GelBreakingFeature = "GelBreakingFeatureType";
 	public static string CirculationFeature = "CirculationFeatureType";
 	public static string DrillingFluidDisplacementFeature = "DrillingFluidDisplacementFeatureType";
 	public static string CementingFeature = "CementingFeatureType";
@@ -596,7 +603,7 @@ public static partial class TypesIds
 	public static string DrillStemRotationalMovementFeature = "DrillStemRotationalMovementFeatureType";
 	public static string StuckPipeFeature = "StuckPipeFeatureType";
 	public static string DrillStemAxialImpedimentFeature = "DrillStemAxialImpedimentFeatureType";
-	public static string DrillSteRotationalImpedimentFeature = "DrillSteRotationalImpedimentFeatureType";
+	public static string DrillStemRotationalImpedimentFeature = "DrillStemRotationalImpedimentFeatureType";
 	public static string DrillStemVibrationFeature = "DrillStemVibrationFeatureType";
 	public static string DrillStemAxialVibrationFeature = "DrillStemAxialVibrationFeatureType";
 	public static string DrillStemAxialStickSlipFeature = "DrillStemAxialStickSlipFeatureType";
@@ -672,6 +679,7 @@ public static partial class TypesIds
 	public static string RotationStopProcedure = "RotationStopProcedureType";
 	public static string HoistProcedure = "HoistProcedureType";
 	public static string TagBottomProcedure = "TagBottomProcedureType";
+	public static string PickOffBottomProcedure = "PickOffBottomProcedureType";
 	public static string ReciprocationProcedure = "ReciprocationProcedureType";
 	public static string FrictionTestProcedure = "FrictionTestProcedureType";
 	public static string SlowCirculationRateProcedure = "SlowCirculationRateProcedureType";

@@ -9,10 +9,10 @@ namespace DWIS.OPCUA.SchemaGeneration
             var vocabulary = DWIS.Vocabulary.Standard.VocabularyProvider.Vocabulary;
             var conf = DWIS.OPCUA.Vocabulary.VocabularyOPCUAConfiguration.GetConfiguration();//.FromJSONFile(opcUAConfigurationFile);
 
-            string typesFileName = FindDWISFolder() + @"\DDHub-DSID-WP2-Common\src\DWIS.Vocabulary.OPCUA\DWIS.OPCUA.Schemas\TypesIds.cs";
-            string referencesFileName = FindDWISFolder() + @"\DDHub-DSID-WP2-Common\src\DWIS.Vocabulary.OPCUA\DWIS.OPCUA.Schemas\ReferencesIds.cs";
-            string classesFileName = FindDWISFolder() + @"\DDHub-DSID-WP2-Common\src\DWIS.Vocabulary.OPCUA\DWIS.OPCUA.Schemas\ClassesIds.cs";
-            string fieldsFileName = FindDWISFolder() + @"\DDHub-DSID-WP2-Common\src\DWIS.Vocabulary.OPCUA\DWIS.OPCUA.Schemas\Fields.cs";
+            string typesFileName = FindDWISFolder() + @"\DWIS-Blackboard-Base\src\DWIS.OPCUA.Schemas\TypesIds.cs";
+            string referencesFileName = FindDWISFolder() + @"\DWIS-Blackboard-Base\src\DWIS.OPCUA.Schemas\ReferencesIds.cs";
+            string classesFileName = FindDWISFolder() + @"\DWIS-Blackboard-Base\src\DWIS.OPCUA.Schemas\ClassesIds.cs";
+            string fieldsFileName = FindDWISFolder() + @"\DWIS-Blackboard-Base\src\DWIS.OPCUA.Schemas\Fields.cs";
 
             DWIS.OPCUA.Vocabulary.OPCSchemaWriter.WriteTypes(vocabulary, conf, typesFileName);
             DWIS.OPCUA.Vocabulary.OPCSchemaWriter.WriteClasses(vocabulary, conf, classesFileName);

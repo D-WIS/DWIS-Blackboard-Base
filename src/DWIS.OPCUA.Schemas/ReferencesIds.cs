@@ -36,6 +36,8 @@ public static partial class ReferencesIds
 	public static string IsLimitFor = "IsLimitForReferenceType";
 	public static string IsMinimumLimitFor = "IsMinimumLimitForReferenceType";
 	public static string IsMaximumLimitFor = "IsMaximumLimitForReferenceType";
+	public static string IsCurrentStateFor = "IsCurrentStateForReferenceType";
+	public static string IsInformationForCurrentStateOf = "IsInformationForCurrentStateOfReferenceType";
 	public static string IsSetPointFor = "IsSetPointForReferenceType";
 	public static string IsSetPointRecommendationFor = "IsSetPointRecommendationForReferenceType";
 	public static string IsSetPointAdviceFor = "IsSetPointAdviceForReferenceType";
