@@ -1,0 +1,6 @@
+dotnet nuget push ./reference-implementation-packages/DWIS.API.DTO.2.2.9.nupkg --api-key oy2jpecxstvzqzwjesvayut6egzhrnou5ma6nirjirordy --source https://api.nuget.org/v3/index.json
+dotnet nuget push ./reference-implementation-packages/DWIS.OPCUA.Schemas.2.2.9.nupkg --api-key oy2jpecxstvzqzwjesvayut6egzhrnou5ma6nirjirordy --source https://api.nuget.org/v3/index.json
+dotnet nuget push ./reference-implementation-packages/DWIS.OPCUA.Vocabulary.2.2.9.nupkg --api-key oy2jpecxstvzqzwjesvayut6egzhrnou5ma6nirjirordy --source https://api.nuget.org/v3/index.json
+dotnet nuget push ./reference-implementation-packages/DWIS.Vocabulary.ResourceIntegration.2.2.9.nupkg --api-key oy2jpecxstvzqzwjesvayut6egzhrnou5ma6nirjirordy --source https://api.nuget.org/v3/index.json
+dotnet nuget push ./reference-implementation-packages/DWIS.SPARQL.Utils.2.2.9.nupkg --api-key oy2jpecxstvzqzwjesvayut6egzhrnou5ma6nirjirordy --source https://api.nuget.org/v3/index.json
+dotnet nuget push ./reference-implementation-packages/DWIS.OPCUA.Configuration.2.2.9.nupkg --api-key oy2jpecxstvzqzwjesvayut6egzhrnou5ma6nirjirordy --source https://api.nuget.org/v3/index.json
