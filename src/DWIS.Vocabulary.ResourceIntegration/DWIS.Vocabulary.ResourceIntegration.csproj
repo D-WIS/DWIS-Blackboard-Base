@@ -11,8 +11,8 @@
     <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DWIS.Vocabulary.Development" Version="1.0.158" />
-    <PackageReference Include="DWIS.Vocabulary.Schemas" Version="1.0.158" />
+    <PackageReference Include="DWIS.Vocabulary.Development" Version="1.0.159" />
+    <PackageReference Include="DWIS.Vocabulary.Schemas" Version="1.0.159" />
     <PackageReference Include="Newtonsoft.Json.Schema" Version="4.0.1" />
   </ItemGroup>
 
