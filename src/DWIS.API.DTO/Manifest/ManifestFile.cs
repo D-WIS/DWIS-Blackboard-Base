@@ -74,6 +74,7 @@ namespace DWIS.API.DTO
                 {
                     pv.Dimensions = dimensions;
                 }
+                ProvidedVariables.Add(pv);
                 return true;
             }
             return false;
