@@ -1,4 +1,23 @@
 # DWIS-Blackboard-Base
+Core packages for the DWIS Blackboard API (manifest/query DTOs), OPC UA configuration/schema generation, and vocabulary support used by DWIS clients/servers.
+
+## Repository layout
+- `src/DWIS.API.DTO/` - data contracts for manifest injection/provision, query resolution/registration, acquisition payloads, and resource identifiers.
+- `src/DWIS.API.ManifestFilesGeneration/` - helpers to build manifest JSON payloads.
+- `src/DWIS.API.ManifestFileSchemaGeneration/` - generator for the manifest JSON schema.
+- `src/DWIS.OPCUA.Configuration/` & `ConfigurationEditor/` - OPC UA app/license configuration helpers.
+- `src/DWIS.OPCUA.SchemaGeneration/` - generates OPC UA schema/type id classes from the DWIS vocabulary (writes into `src/DWIS.OPCUA.Schemas/`).
+- `src/DWIS.OPCUA.Vocabulary/`, `src/DWIS.SPARQL.Utils/`, `src/DWIS.Vocabulary.ResourceIntegration/` - shared vocabulary/SPARQL utilities consumed by blackboard components.
+- `src/reference-implementation-packages/` - bundled DWIS NuGet packages for offline/local builds.
+- Solutions: `DWIS.Blackboard.Base.sln` (core packages) and `DWIS.Blackboard.Base.Deployment.sln` (deployment packaging).
+
+## Build
+- Build all packages: `dotnet build src/DWIS.Blackboard.Base.sln`
+- Regenerate OPC UA schema ids: `dotnet run --project src/DWIS.OPCUA.SchemaGeneration`
+- Regenerate manifest JSON schema: `dotnet run --project src/DWIS.API.ManifestFileSchemaGeneration`
+- If offline, add `src/reference-implementation-packages` as a local NuGet source.
+
+## API details (manifest & queries)
 
 ## DWIS.API.DTO
 
@@ -112,51 +131,6 @@ The following tables contain the full description of the **ManifestFile** and **
 | **ID** | `string` | *true* | the ID of the *semantic resource*.  |
 
 
-<!---
-Here is an overview of what a manifest file can/should contain:
-
-- `ManifestName` (*optional*, `string`): the name given to the manifest. It is only used for logging purposes
-- `InjectionProvider` (*Mandatory*): contains information about the application that provides the semantic information. A dedicated *semantic node* representing the provider will be created upon manifest injection. 
-  - `Name` (*Mandatory*, `string`): the name of the application. The **blackboard** uses the name to generate namespaces and variable id's to the different nodes that are injected. 
-  - `Company` (*Optional*, `string`)
-- `InjectionInformation` (*Mandatory*)
-  - `InjectedVariablesNamespaceAlias` (*Mandatory*, `string`, default: `"Variables"`): a local alias for the *injected variables*, for references in the `InjectedReference` section. Not used when the *variable injection* feature is not used. 
-  - `InjectedNodesNamespaceAlias` (*Mandatory*, `string`, default: `"Nodes"`): a local alias for the *semantic nodes*, for references in the `InjectedReference` section. 
-  - `ProvidedVariablesNamespaceAlias` (*Mandatory*, `string`, default: `"ProvidedVariables"`): a local alias for the *provided variables*, for references in the `InjectedReference` section. Not used when the *variable provision* feature is not used. 
-  - `InjectedVocabularyNamespaceAlias` (*Mandatory*, `string`, default: `"Vocabulary"`): a local alias for the *injected vocabulary*, a feature not covered yet by the implementation. 
-  - `ServerName` (*Optional*, `string`): for the *variable injection* scenario, the name of the external server containing the real-time signals.
-  - `EndPointURL` (*Optional*, `string`): for the *variable injection* scenario, the url of the external server containing the real-time signals.
-  - `PublishingIntervalInMS` (*Optional*, `double`): for the *variable injection* scenario, the expected refresh-rate of the variables in the external server. 
-- `InjectedNodes` (*Optional*, `[InjectedNode]`): the list of *semantic nodes* used to describe the signals. Each item is of type `InjectedNode`:
-  - `UniqueName` (*Mandatory*, `string`): the identifier for the *semantic node*
-  - `BrowseName` (*Optional*, `string`): the OPC-UA browse name for the *semantic node*
-  - `DisplayName` (*Optional*, `string`): the display name for the *semantic node*
-  - `TypeDictionaryURI` (*Mandatory*, `string`): the base type of the *semantic node*. Additional classes can be specified in the `InjectedReferences` section. 
-  - `Fields` (*Optional*): the list of attributes defined for the `semantic nodes`. Each item is of type `Field`:
-    - `FieldName` (*Mandatory*, `string`): the name of the field. 
-    - `FieldValue` (*Mandatory*, `string`): the string version of the field. 
-- `InjectedVariables` (*Optional*, `[InjectedVariable]`): the list of *variables* in the *variable injection* scenario. Each item is of type `InjectedVariable`:
-  - `NativeAddressSpaceNameSpace` (*Mandatory*, `string`): the namespace of the variable in the external OPC-UA server.
-  - `NativeAddressSpaceNodeID` (*Mandatory*, `string`): the string id of the variable in the external OPC-UA server. 
-  - `InjectedName` (*Mandatory*, `string`): the id of the variable, used to assign an id in the **blackboard** and for further references in the `InjectedReferences` section. 
-  - `SamplingIntervalInMS` (*Optional*, `double`): the specific refresh rate of this variable. 
-- `ProvidedVariables` (*Optional*, `[ProvidedVariable]`): the list of *variables* in the *variable provision* scenario. Each item is of type `ProvidedVariable`:
-  - `VariableID` (*Mandatory*, `string`): the id of the variable, used to assign an id in the **blackboard** and for further references in the `InjectedReferences` section. 
-  - `Rank` (*Optional*, `int`, default: `0`): the rank of the *variable*, corresponding of the number of indices required to access a single scalar value. For a scalar, the value is `0`, a one-dimensional array `1`. 
-  - `Dimensions` (*Optional*, `[int]`, default: `null`): the shape of the variable. For a 1-dimensional array with *n* entries, the value is `[1]`. For a *n* x *m* matrix, the value is `[n, m]`.
-  - `DataType` (*Mandatory*, `string`): the base type of the *variable*. For an array of floats, the value is *float*. The list of currently managed data types is: `bool`, `int`, `uint`, `string`, `long`, `ulong`, `double`, `float`, `short`, `ushort`. 
-- `InjectedReferences` (*Optional*, `[InjectedReferences]`): the list of *semantic sentences* used to describe the signals. All those sentences are of the form *(subject-verb-object)*. Typically, the *subject* is a *semantic resource*, i.e. a *node* or *variable* defined in the manifest or already present on the **blackboard**. The *verb* has to come from the DWIS vocabulary. The *object* is typically also a *semantic resource*. The *object* can be a DWIS noun in the following cases: when specifying that the *subject* belongs to a specific class, in which case the verb has to be *BelongsToClass*, or when using *blank nodes*, a special scenario. Each item in the list is of type `InjectedReference`:
-  - `Subject` (*Mandatory*, `NodeIdentifier`). A `NodeIdentifier` is described by:
-    - `NameSpace` (*Mandatory*, `string`): the namespace of the *semantic resource*. If already present on the **blackboard**, it should be the namespace in the **blackboard** address space. If it corresponds to a *resource* defined in the current manifest, the aliases defined in the `InjectionInformation` section should be used. 
-    - `ID` (*Mandatory*, `string`): the ID of the *semantic resource*. 
-  - `Verb` (*Mandatory*, `string`): the verb of the *semantic sentence*. Should be present in the DWIS vocabulary. 
-  - `Object` (*Mandatory*, `NodeIdentifier`).
-- `InjectedVocabulary` (*Optional*): when injected a custom vocabulary. This feature is not implemented yet. 
--->
-
-
-
-
 #### ManifestInjectionResult
 
 | **Field name** | **Field type** | **Mandatory** | **Description** |
@@ -212,12 +186,3 @@ On a change event, a json version of a **QueryResultsDiff** object is distribute
 | **QueryResultID** | `string` | *N/A* | The id assigned by the **blackboard** to the results to the SPARQL query. An OPC-UA node with the same id is created, that contains the current results: by subscribing to value-change on this node, change notifications will be received. |
 | **Added** | `QueryResultRow[]` | *N/A* | The rows that have been added to the query's results since last notification. When the **QueryResultsDiff** is the result of a registration, the **Added** field contains *all* the results of the query. |
 | **Removed** | `QueryResultRow[]` | *N/A* | The rows that have been removed from the query's results since last notification. |
-
-
-<!--
-
-| **Field name** | **Field type** | **Mandatory** | **Description** |
-| -------------- | -------------- | ------------- | --------------- |
-| **** | `` | ** |  |
-
--->
