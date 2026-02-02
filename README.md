@@ -17,7 +17,11 @@ Core packages for the DWIS Blackboard API (manifest/query DTOs), OPC UA configur
 - Regenerate manifest JSON schema: `dotnet run --project src/DWIS.API.ManifestFileSchemaGeneration`
 - If offline, add `src/reference-implementation-packages` as a local NuGet source.
 
-## API details (manifest & queries)
+## Differences with *standard* OPCUA workflows.
+
+The purpose of semantic D-WIS framework is to allow for dynamic discovery of drilling signals. The discovery is based on the assuption that signals provider describe their data (via semantic annotations in a *manifest* file), and that data consumer query the blackboard: this is done via SPARQL queries that describe the characteristics of the desired signals. The response of the server is the OPC-UA address of the corresponding signals. 
+
+As a result, fixed address spaces are not considered in D-WIS. The standard way of configuring an OPC client via a list of node ids is not applicable here. However, the assigned namespaces are based on the name of the Provider defined in the *manifest*: so if during successive sessions the same *manifest* is injected, the namespace and id of the variables defined in the *manifest* should remain unchanged. Note that the namespace index may change, it is up to the client to load the index of the returned namespace. 
 
 ## DWIS.API.DTO
 
