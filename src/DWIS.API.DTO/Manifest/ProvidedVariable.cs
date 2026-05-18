@@ -23,9 +23,13 @@
         public int[] Dimensions { get; set; } = null;
         
         /// <summary>
-        /// The type of the underlying data. So far, the following strings are accepted: double, float, int, long, short, string. 
+        /// The type of the underlying data. So far, the following strings are accepted: double, float, int, long, short, string, bool. 
         /// </summary>
         public string DataType { get; set; }
-    }
 
+        /// <summary>
+        /// The initial value of the variable. This is optional, and if not provided, the variable will be initialized to the default value of the corresponding data type.
+        /// </summary>
+        public string InitialValue { get; set; } = "";
+    }
 }
