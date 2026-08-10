@@ -1,9 +1,12 @@
-﻿using System;
+﻿using DWIS.Vocabulary.Development;
+using DWIS.Vocabulary.Schemas;
+using Newtonsoft.Json.Schema.Generation;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json.Schema.Generation;
 using System.Linq;
-using DWIS.Vocabulary.Development;
+using System.Resources;
+using static DWIS.API.DTO.ProvidedVariable;
 
 namespace DWIS.API.DTO
 {
@@ -234,7 +237,7 @@ namespace DWIS.API.DTO
         /// <param name="providerName"></param>
         /// <param name="companyName"></param>
         /// <returns></returns>
-        public static ManifestFile FromDWISInstance(DWIS.Vocabulary.Development.DWISInstance instance, string providerName, string companyName)
+        public static ManifestFile FromDWISInstance(DWISInstance instance, string providerName, string companyName)
         {
             DWIS.API.DTO.ManifestFile manifestFile = new API.DTO.ManifestFile();
             manifestFile.InjectionInformation = new API.DTO.InjectionInformation();
@@ -313,6 +316,130 @@ namespace DWIS.API.DTO
             return manifestFile;
         }
 
+        public static void AddValidityFlags(ManifestFile manifest)
+        {
+            if (manifest != null && manifest.ProvidedVariables != null)
+            {
+                if (manifest.InjectedReferences == null)
+                {
+                    manifest.InjectedReferences = new List<InjectedReference>();
+                }
+
+                List<ProvidedVariable> validityFlags = new List<ProvidedVariable>();
+                List<InjectedReference> validityReferences = new List<InjectedReference>();
+
+                string isValidReference = DDHubURIPrefix + Verbs.IsValidBy;
+                foreach (var variable in manifest.ProvidedVariables)
+                {
+                    bool shouldAdd = false;
+                    //check if the variable is not itself a validity flag (to avoid infinite loop)
+                    shouldAdd = FindReferenceByObjectVariable(manifest, variable, isValidReference) == null;
+
+                    //check if the variable does not already have a validity flag (to avoid duplicates)
+                    shouldAdd &= FindReferenceBySubjectVariable(manifest, variable, isValidReference) == null;
+
+                    //add a validity flag for the variable
+                    ProvidedVariable validityVariable = new ProvidedVariable()
+                    {
+                        DataType = "bool",
+                        InitialValue = "true",
+                        Dimensions = null,
+                        Rank = 0,
+                        VariableID = variable.VariableID + "_validitySignal"
+                    };
+                    validityFlags.Add(validityVariable);
+                    InjectedReference reference = new InjectedReference()
+                    {
+                        Subject = new NodeIdentifier() { NameSpace = manifest.InjectionInformation.ProvidedVariablesNamespaceAlias, ID = variable.VariableID },
+                        VerbURI = isValidReference,
+                        Object = new NodeIdentifier() { NameSpace = manifest.InjectionInformation.ProvidedVariablesNamespaceAlias, ID = validityVariable.VariableID }
+                    };
+                    validityReferences.Add(reference);
+                }
+
+                if (validityFlags.Count > 0)
+                {
+                    foreach (var vf in validityFlags) 
+                    {
+                        manifest.ProvidedVariables.Add(vf);
+                    }
+                }
+
+                if (validityReferences.Count > 0)
+                {
+                    foreach (var vr in validityReferences)
+                    {
+                        manifest.InjectedReferences.Add(vr);
+                    }
+                }
+            }
+        }
+
+        private static  InjectedReference? FindReferenceByObjectVariable(ManifestFile manifest, ProvidedVariable providedVariable, string verb)
+        {
+            if (manifest == null) return null;
+            if (manifest.InjectedReferences == null) return null;
+
+            return manifest.InjectedReferences.FirstOrDefault(ir => ir.Object.Equals(providedVariable) && ir.VerbURI == verb);
+            
+        }
+
+        private static InjectedReference? FindReferenceBySubjectVariable(ManifestFile manifest, ProvidedVariable providedVariable, string verb)
+        {
+            if (manifest == null) return null;
+            if (manifest.InjectedReferences == null) return null;
+
+            return manifest.InjectedReferences.FirstOrDefault(ir => ir.Subject.Equals(providedVariable) && ir.VerbURI == verb);
+
+        }
+
+
+        private static string DDHubURIPrefix = "http://ddhub.no/";
+        public static bool AreSame(ManifestFile manifest1, ManifestFile manifest2)
+        {
+            if (manifest1 == null || manifest2 == null) return false;
+
+            if (manifest1.InjectionInformation != null)
+            {
+                if (!manifest1.InjectionInformation.Equals(manifest2.InjectionInformation)) { return false; }
+            }
+            else if (manifest2.InjectionInformation != null) { return false; }
+
+            if (manifest1.ManifestName != manifest2.ManifestName) return false;
+
+            if (manifest1.Provider != null)
+            {
+                if (!manifest1.Provider.Equals(manifest2.Provider)) return false;
+            }
+            else if (manifest2.Provider != null) return false;
+
+            if (manifest1.InjectedNodes != null)
+            {
+                if (manifest2.InjectedNodes == null ||  !manifest1.InjectedNodes.SequenceEqual(manifest2.InjectedNodes)) { return false; }
+            }
+            else if (manifest2.InjectedNodes != null) return false;
+
+            if (manifest1.InjectedVariables != null)
+            {
+                if (manifest2.InjectedVariables == null || !manifest1.InjectedVariables.SequenceEqual(manifest2.InjectedVariables)) { return false; }
+            }
+            else if (manifest2.InjectedVariables != null) return false;
+
+            if (manifest1.ProvidedVariables != null)
+            {
+                if (manifest2.ProvidedVariables == null || !manifest1.ProvidedVariables.SequenceEqual(manifest2.ProvidedVariables, new ProvidedVariableComparer())) { return false; }
+            }
+            else if (manifest2.ProvidedVariables != null) return false;
+
+            if (manifest1.InjectedReferences != null)
+            {
+                if (manifest2.InjectedReferences == null || !manifest1.InjectedReferences.SequenceEqual(manifest2.InjectedReferences)) { return false; }
+            }
+            else if (manifest2.InjectedReferences != null) return false;
+
+
+            return true;
+        }
         #endregion
     }
 }
