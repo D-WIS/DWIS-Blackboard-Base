@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -21,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DWIS.Vocabulary.Development" Version="1.0.172" />
-    <PackageReference Include="DWIS.Vocabulary.Schemas" Version="1.0.172" />
+    <PackageReference Include="DWIS.Vocabulary.Development" Version="1.0.175" />
+    <PackageReference Include="DWIS.Vocabulary.Schemas" Version="1.0.175" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Newtonsoft.Json.Schema" Version="4.0.1" />
   </ItemGroup>

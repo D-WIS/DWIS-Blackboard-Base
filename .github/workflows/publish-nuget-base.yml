@@ -1,24 +1,52 @@
 name: Generate nuget packages for blackboard.base
-on: 
+
+on:
   workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: publish-nuget-base
+  cancel-in-progress: false
 
 jobs:
   pack-and-push:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     env:
-      PACKAGE_OUTPUT_FOLDER: "${{ github.workspace }}/src/reference-implementation-packages"
-      NUGET_SECRET_API: ${{ secrets.NUGET_SECRET_API }}
-
-    
+      PACKAGE_OUTPUT_FOLDER: ${{ github.workspace }}/artifacts/packages
+      PACKAGE_VERSION: 2.2.${{ github.run_number }}
     steps:
-      - uses: actions/checkout@v2   
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
 
       - name: Build and pack
-        run: |
-          cd "${{ github.workspace }}/src"
-          dotnet pack DWIS.Blackboard.Base.sln --output "${{ github.workspace }}/src/reference-implementation-packages" -p:PackageVersion=2.2."${{ github.run_number }}"
+        run: dotnet pack src/DWIS.Blackboard.Base.sln --configuration Release --output "$PACKAGE_OUTPUT_FOLDER" -p:PackageVersion="$PACKAGE_VERSION"
 
-      - name: 'Push to NuGet.org'
+      - name: Verify package identities and dependencies
+        shell: pwsh
+        run: ./scripts/Verify-Packages.ps1 -PackageFolder $env:PACKAGE_OUTPUT_FOLDER -Version $env:PACKAGE_VERSION
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: blackboard-nuget-packages
+          path: ${{ env.PACKAGE_OUTPUT_FOLDER }}/*.nupkg
+          if-no-files-found: error
+
+      - name: Authenticate to NuGet.org with Trusted Publishing
+        uses: NuGet/login@v1
+        id: nuget-login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Push to NuGet.org in dependency order
+        env:
+          NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
         run: |
-          cd "${{ github.workspace }}/src/reference-implementation-packages"
-          dotnet nuget push "*.nupkg" -k ${NUGET_SECRET_API} -s https://api.nuget.org/v3/index.json --skip-duplicate
+          for package in DWIS.API.DTO DWIS.OPCUA.Configuration DWIS.OPCUA.Vocabulary DWIS.SPARQL.Utils DWIS.Vocabulary.ResourceIntegration DWIS.OPCUA.Schemas; do
+            dotnet nuget push "$PACKAGE_OUTPUT_FOLDER/$package.$PACKAGE_VERSION.nupkg" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          done

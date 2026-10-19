@@ -17,6 +17,27 @@ Core packages for the DWIS Blackboard API (manifest/query DTOs), OPC UA configur
 - Regenerate manifest JSON schema: `dotnet run --project src/DWIS.API.ManifestFileSchemaGeneration`
 - If offline, add `src/reference-implementation-packages` as a local NuGet source.
 
+## NuGet releases
+All projects use DWIS vocabulary packages 1.0.175. The manual
+`publish-nuget-base.yml` workflow builds the six core library packages in Release
+configuration with version `2.2.<workflow run number>`, verifies their package
+identities and internal/vocabulary dependencies using `scripts/Verify-Packages.ps1`,
+and uploads the packages as a workflow artifact before publication.
+
+Publication uses NuGet Trusted Publishing (`NuGet/login@v1`) with GitHub OIDC
+(`id-token: write`) and the repository secret `NUGET_USER` containing the NuGet
+account name. On NuGet.org, that account must own all six packages and have a
+Trusted Publishing policy for repository owner `D-WIS`, repository
+`DWIS-Blackboard-Base`, workflow `publish-nuget-base.yml` (no environment).
+The workflow publishes packages in dependency order using the short-lived API key
+returned by login. No long-lived NuGet API-key secret is needed.
+
+For local verification, pack `src/DWIS.Blackboard.Base.sln` with an explicit
+`PackageVersion`, then run `scripts/Verify-Packages.ps1 -PackageFolder <output>
+-Version <version>`. The separate deployment solution includes the Windows
+configuration editor, which additionally needs the licensed
+`UnifiedAutomation.UaBase` 3.2.1 package from its vendor feed.
+
 ## Differences with *standard* OPCUA workflows.
 
 The purpose of semantic D-WIS framework is to allow for dynamic discovery of drilling signals. The discovery is based on the assuption that signals provider describe their data (via semantic annotations in a *manifest* file), and that data consumer query the blackboard: this is done via SPARQL queries that describe the characteristics of the desired signals. The response of the server is the OPC-UA address of the corresponding signals. 
