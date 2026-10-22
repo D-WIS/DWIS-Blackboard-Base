@@ -1,6 +1,8 @@
 name: Generate nuget packages for blackboard.base
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
