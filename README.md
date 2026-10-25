@@ -211,3 +211,7 @@ On a change event, a json version of a **QueryResultsDiff** object is distribute
 | **QueryResultID** | `string` | *N/A* | The id assigned by the **blackboard** to the results to the SPARQL query. An OPC-UA node with the same id is created, that contains the current results: by subscribing to value-change on this node, change notifications will be received. |
 | **Added** | `QueryResultRow[]` | *N/A* | The rows that have been added to the query's results since last notification. When the **QueryResultsDiff** is the result of a registration, the **Added** field contains *all* the results of the query. |
 | **Removed** | `QueryResultRow[]` | *N/A* | The rows that have been removed from the query's results since last notification. |
+
+## RigJobDescription dependency release
+
+Vocabulary 1.0.177 adds RigJobDescription and rig/wellbore relationships. The six base packages are rebuilt against that vocabulary; package verification enforces the same version.

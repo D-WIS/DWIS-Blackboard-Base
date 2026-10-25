@@ -19,7 +19,7 @@ foreach ($id in $expected) {
         if ($metadata.id -ne $id -or $metadata.version -ne $Version) { throw "Unexpected identity/version in $id" }
         foreach ($dependency in $metadata.SelectNodes('.//*[local-name()="dependency"]')) {
             $required = if ($dependency.id -in $expected) { $Version }
-                elseif ($dependency.id -like 'DWIS.Vocabulary.*') { '1.0.176' }
+                elseif ($dependency.id -like 'DWIS.Vocabulary.*') { '1.0.177' }
                 else { continue }
             if ($dependency.version -notin @($required, "[$required, )", "[$required]")) {
                 throw "$id has unexpected dependency $($dependency.id) $($dependency.version); expected $required"
