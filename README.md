@@ -18,7 +18,7 @@ Core packages for the DWIS Blackboard API (manifest/query DTOs), OPC UA configur
 - If offline, add `src/reference-implementation-packages` as a local NuGet source.
 
 ## NuGet releases
-All projects use DWIS vocabulary packages 1.0.176. The
+All projects use DWIS vocabulary packages 1.0.177. The
 `publish-nuget-base.yml` workflow runs on pushes to `main` or manual dispatch and builds the six core library packages in Release
 configuration with version `2.2.<workflow run number>`, verifies their package
 identities and internal/vocabulary dependencies using `scripts/Verify-Packages.ps1`,
